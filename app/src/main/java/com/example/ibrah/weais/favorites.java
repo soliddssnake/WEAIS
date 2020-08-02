@@ -24,7 +24,7 @@ public class favorites extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    FavRecyclerAdapter favRecyclerAdapter;
+
 
     public static favorites newInstance(String param1, String param2) {
         favorites fragment = new favorites();
@@ -54,11 +54,9 @@ public class favorites extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_favorites, container, false);
 
         RecyclerView recyclerView = viewGroup.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(favRecyclerAdapter);
-
-
+        ((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter(((MainActivity)getActivity()).sehirFromApi);
+        recyclerView.setAdapter(((MainActivity)getActivity()).favRecyclerAdapter);
 
         return viewGroup;
     }

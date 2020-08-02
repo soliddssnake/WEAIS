@@ -69,7 +69,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Use the {@link arama#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class arama extends Fragment {
+public class arama extends Fragment   {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -141,7 +141,8 @@ public class arama extends Fragment {
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
 
-        ((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter (((MainActivity)getActivity()).sehirFromApi);
+
+
 
 
 
@@ -169,31 +170,13 @@ public class arama extends Fragment {
         });
 
 
-        eklemebutonu.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).sehirFromApi.add(((MainActivity)getActivity()).request.url().toString());
 
-                ((MainActivity)getActivity()).sharedPrefs = PreferenceManager.getDefaultSharedPreferences(((MainActivity)getActivity()).context);
-                ((MainActivity)getActivity()).editor = ((MainActivity)getActivity()).sharedPrefs.edit();
-                Gson gson = new Gson();
-
-                String json = gson.toJson(((MainActivity)getActivity()).sehirFromApi);
-
-                ((MainActivity)getActivity()).editor.putString(((MainActivity)getActivity()).request.url().toString(), json);
-                ((MainActivity)getActivity()).editor.commit();
-
-
-
-
-            }
-        });
 
 
         return viewGroup;
     }
 
-    private void apiKey(final String Sehir) {
+    public void apiKey(final String Sehir) {
 
         OkHttpClient client = new OkHttpClient();
         ((MainActivity)getActivity()).request = new Request.Builder()
@@ -221,7 +204,7 @@ public class arama extends Fragment {
                         JSONObject object=array.getJSONObject(0);
 
                         String description=object.getString("description");
-                        String icons = object.getString("icon");
+                        final String icons = object.getString("icon");
 
                         JSONObject temp1= json.getJSONObject("main");
                         Double Temperature=temp1.getDouble("temp");
@@ -233,7 +216,17 @@ public class arama extends Fragment {
                         setText(view_durum,description);
                         setImage(view_hava ,icons);
 
+                        eklemebutonu.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v) {
+                                ((MainActivity)getActivity()).sehirFromApi.add(Sehir);
 
+                                ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
+
+
+
+                            }
+                        });
 
 
                     } catch (JSONException e) {

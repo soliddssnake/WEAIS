@@ -2,7 +2,7 @@ package com.example.ibrah.weais;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.view.ViewGroup;
 import android.app.Activity;
 import android.support.v4.app.*;
 import android.os.StrictMode;
@@ -50,7 +50,14 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class MainActivity extends AppCompatActivity  {
+
+    ArrayList<String> sehirFromApi;
+
+
 
     Request request;
     Editor editor;
@@ -62,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
     private favorites favoritesFragment;
     private arama aramaFragment;
 
-    ArrayList<String> sehirFromApi;
-    ArrayList<String> sıcaklıkFromApi;
-    ArrayList<String> durumFromApi;
-    ArrayList<String> iconsFromApi;
+
+
+
 
     FavRecyclerAdapter favRecyclerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         sehirFromApi = new ArrayList<>();
-        sıcaklıkFromApi = new ArrayList<>();
-        durumFromApi = new ArrayList<>();
-        iconsFromApi = new ArrayList<>();
 
+        /*RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        favRecyclerAdapter = new FavRecyclerAdapter(sehirFromApi);
+        recyclerView.setAdapter(favRecyclerAdapter);*/
 
 
     }
