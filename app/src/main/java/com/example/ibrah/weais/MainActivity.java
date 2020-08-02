@@ -2,6 +2,8 @@ package com.example.ibrah.weais;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.res.Resources;
 import android.view.ViewGroup;
 import android.app.Activity;
 import android.support.v4.app.*;
@@ -57,12 +59,12 @@ public class MainActivity extends AppCompatActivity  {
 
     ArrayList<String> sehirFromApi;
     ArrayList<String> iconFromApi;
-
+    ArrayList<String> durumFromApi;
+    ArrayList<String> sıcaklıkFromApi;
 
     Request request;
-    Editor editor;
-    SharedPreferences sharedPrefs;
-    Context context;
+
+    private static Context context;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity  {
 
 
     FavRecyclerAdapter favRecyclerAdapter;
+
+
 
 
     @Override
@@ -98,11 +102,17 @@ public class MainActivity extends AppCompatActivity  {
 
         sehirFromApi = new ArrayList<>();
         iconFromApi = new ArrayList<>();
+        durumFromApi = new ArrayList<>();
+        sıcaklıkFromApi = new ArrayList<>();
 
-
+        context = this;
 
     }
+    public static final Context getContext (){
 
+
+        return context;
+    }
 
 
     private class ViewPagerAdapter extends FragmentPagerAdapter{

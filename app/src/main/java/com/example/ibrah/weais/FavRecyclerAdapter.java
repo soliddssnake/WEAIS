@@ -25,21 +25,20 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
 
     private ArrayList<String> SehirList;
     private ArrayList<String> IconList;
+    private ArrayList<String> DurumList;
+    private ArrayList<String> SıcaklıkList;
 
-    Context context;
 
 
-    public FavRecyclerAdapter(ArrayList<String> SehirList,final ArrayList<String> IconList) {
+    public FavRecyclerAdapter(ArrayList<String> SehirList, final ArrayList<String> IconList, ArrayList<String> DurumList,
+    ArrayList<String> SıcaklıkList) {
 
         this.SehirList = SehirList;
         this.IconList = IconList;
+        this.DurumList = DurumList;
+        this.SıcaklıkList = SıcaklıkList;
 
 
-
-    }
-    public final Context getContext (){
-
-        return context;
     }
 
     @NonNull
@@ -59,64 +58,66 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
 
         switch (IconList.get(position)) {
             case "01d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.gunes));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.gunes));
                 break;
             case "01n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.acikgece));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.acikgece));
                 break;
             case "02d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.parcalibulut));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.parcalibulut));
                 break;
             case "02n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.geceparcali));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.geceparcali));
                 break;
             case "03d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.cokbulut));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.cokbulut));
                 break;
             case "03n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.bulutgece));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulutgece));
                 break;
             case "04d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.bulut));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulut));
                 break;
             case "04n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.bulut));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulut));
                 break;
             case "09d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.yagmur));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmur));
                 break;
             case "09n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.yagmur));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmur));
                 break;
             case "10d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.gunyagmur));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.gunyagmur));
                 break;
             case "10n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.yagmurgece));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmurgece));
                 break;
             case "11d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.simsek));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.simsek));
                 break;
             case "11n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.simsek));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.simsek));
                 break;
             case "13d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.kar));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.kar));
                 break;
             case "13n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.kargece));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.kargece));
                 break;
             case "50d":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.sis));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.sis));
                 break;
             case "50n":
-                holder.iconadı.setImageDrawable(getContext().getResources().getDrawable(R.drawable.sisgece));
+                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.sisgece));
                 break;
             default:
-                Toast.makeText(getContext(), "Lütfen bir şehir giriniz!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.getContext(), "Lütfen bir şehir giriniz!", Toast.LENGTH_LONG).show();
                 break;
                 }
 
+        holder.durumadı.setText(DurumList.get(position));
+        holder.sıcaklıkadı.setText(SıcaklıkList.get(position));
         }
 
         @Override
@@ -129,13 +130,16 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
 
             TextView sehiradı;
             ImageView iconadı;
-
+            TextView durumadı;
+            TextView sıcaklıkadı;
 
             public CityHolder(@NonNull View itemView) {
                 super(itemView);
 
                 sehiradı = itemView.findViewById(R.id.recycler_row_sehiradı);
                 iconadı = itemView.findViewById(R.id.recycler_row_imageview);
+                durumadı = itemView.findViewById(R.id.recycler_row_durumadı);
+                sıcaklıkadı = itemView.findViewById(R.id.recycler_row_sıcaklıkadı);
             }
         }
 

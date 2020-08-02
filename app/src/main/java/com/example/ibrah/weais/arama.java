@@ -202,15 +202,15 @@ public class arama extends Fragment   {
                         JSONArray array=json.getJSONArray("weather");
                         JSONObject object=array.getJSONObject(0);
 
-                        String description=object.getString("description");
+                        final String description=object.getString("description");
                         final String icons = object.getString("icon");
 
                         JSONObject temp1= json.getJSONObject("main");
                         Double Temperature=temp1.getDouble("temp");
 
-                        setText(view_sehir, Sehir);
+                        final String temps = Math.round(Temperature)+" °C";
 
-                        String temps = Math.round(Temperature)+" °C";
+                        setText(view_sehir, Sehir);
                         setText(view_sıcaklık, temps);
                         setText(view_durum,description);
                         setImage(view_hava ,icons);
@@ -220,6 +220,8 @@ public class arama extends Fragment   {
                             public void onClick(View v) {
                                 ((MainActivity)getActivity()).sehirFromApi.add(Sehir);
                                 ((MainActivity)getActivity()).iconFromApi.add(icons);
+                                ((MainActivity)getActivity()).durumFromApi.add(description);
+                                ((MainActivity)getActivity()).sıcaklıkFromApi.add(temps);
                                 ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
 

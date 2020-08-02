@@ -30,8 +30,7 @@
                 android:layout_height="83dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintLeft_toLeftOf="@+id/recycler_row_sehiradı"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_row_sehiradı"
-                app:srcCompat="@drawable/gunes" />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_row_sehiradı" />
 
             <TextView
                 android:id="@+id/recycler_row_sehiradı"
