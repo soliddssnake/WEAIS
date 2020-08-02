@@ -56,7 +56,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MainActivity extends AppCompatActivity  {
 
     ArrayList<String> sehirFromApi;
-
+    ArrayList<String> iconFromApi;
 
 
     Request request;
@@ -97,11 +97,8 @@ public class MainActivity extends AppCompatActivity  {
 
 
         sehirFromApi = new ArrayList<>();
+        iconFromApi = new ArrayList<>();
 
-        /*RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        favRecyclerAdapter = new FavRecyclerAdapter(sehirFromApi);
-        recyclerView.setAdapter(favRecyclerAdapter);*/
 
 
     }

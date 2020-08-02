@@ -145,7 +145,6 @@ public class arama extends Fragment   {
 
 
 
-
         aramatext.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -220,7 +219,7 @@ public class arama extends Fragment   {
                             @Override
                             public void onClick(View v) {
                                 ((MainActivity)getActivity()).sehirFromApi.add(Sehir);
-
+                                ((MainActivity)getActivity()).iconFromApi.add(icons);
                                 ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
 
