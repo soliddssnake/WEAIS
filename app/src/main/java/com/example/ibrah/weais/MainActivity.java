@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity  {
     ArrayList<String> iconFromApi;
     ArrayList<String> durumFromApi;
     ArrayList<String> sıcaklıkFromApi;
+    List<FavRecyclerAdapter.CityHolder> icindekiler;
 
     Request request;
 
@@ -70,10 +71,6 @@ public class MainActivity extends AppCompatActivity  {
 
     private favorites favoritesFragment;
     private arama aramaFragment;
-
-
-
-
 
     FavRecyclerAdapter favRecyclerAdapter;
 
@@ -98,6 +95,7 @@ public class MainActivity extends AppCompatActivity  {
         viewPagerAdapter.addFragment(aramaFragment, "Arama");
         viewPagerAdapter.addFragment(favoritesFragment, "Favoriler");
         viewPager.setAdapter(viewPagerAdapter);
+
 
 
         sehirFromApi = new ArrayList<>();

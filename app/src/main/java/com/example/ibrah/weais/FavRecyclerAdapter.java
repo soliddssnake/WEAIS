@@ -13,6 +13,9 @@ import android.widget.Toast;
 import java.io.IOException;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 
 import com.google.gson.Gson;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter.CityHolder>   {
+
 
     private ArrayList<String> SehirList;
     private ArrayList<String> IconList;
@@ -47,7 +51,6 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.recycler_row, parent,false);
-
         return new CityHolder(view);
     }
 
@@ -125,13 +128,63 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
             return SehirList.size();
         }
 
+        @Entity
         class CityHolder extends RecyclerView.ViewHolder {
 
-
+            @PrimaryKey(autoGenerate = true)
+            private int id;
             TextView sehiradı;
             ImageView iconadı;
             TextView durumadı;
             TextView sıcaklıkadı;
+
+            public CityHolder(@NonNull View itemView, TextView sehiradı, ImageView iconadı, TextView durumadı, TextView sıcaklıkadı) {
+                super(itemView);
+                this.sehiradı = sehiradı;
+                this.iconadı = iconadı;
+                this.durumadı = durumadı;
+                this.sıcaklıkadı = sıcaklıkadı;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public TextView getSehiradı() {
+                return sehiradı;
+            }
+
+            public void setSehiradı(TextView sehiradı) {
+                this.sehiradı = sehiradı;
+            }
+
+            public ImageView getIconadı() {
+                return iconadı;
+            }
+
+            public void setIconadı(ImageView iconadı) {
+                this.iconadı = iconadı;
+            }
+
+            public TextView getDurumadı() {
+                return durumadı;
+            }
+
+            public void setDurumadı(TextView durumadı) {
+                this.durumadı = durumadı;
+            }
+
+            public TextView getSıcaklıkadı() {
+                return sıcaklıkadı;
+            }
+
+            public void setSıcaklıkadı(TextView sıcaklıkadı) {
+                this.sıcaklıkadı = sıcaklıkadı;
+            }
 
             public CityHolder(@NonNull View itemView) {
                 super(itemView);

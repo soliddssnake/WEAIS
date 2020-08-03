@@ -141,7 +141,8 @@ public class arama extends Fragment   {
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
 
-
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDB.class, "database-name").build();
 
 
 
@@ -224,6 +225,8 @@ public class arama extends Fragment   {
                                 ((MainActivity)getActivity()).sıcaklıkFromApi.add(temps);
                                 ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
+                                db.DataDAO().insertAll(new CityHolder(sehirFromApi.getText().toString));
+
 
 
                             }
@@ -270,7 +273,6 @@ public class arama extends Fragment   {
                     case "01d": imageView.setImageDrawable(getResources().getDrawable(R.drawable.gunes));
                         break;
                     case "01n": imageView.setImageDrawable(getResources().getDrawable(R.drawable.acikgece));
-
                         break;
                     case "02d": imageView.setImageDrawable(getResources().getDrawable(R.drawable.parcalibulut));
                         break;

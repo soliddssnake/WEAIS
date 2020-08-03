@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/sky"
+
     tools:context=".favorites">
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:paddingTop="38dp"
+        android:clipToPadding="false"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
