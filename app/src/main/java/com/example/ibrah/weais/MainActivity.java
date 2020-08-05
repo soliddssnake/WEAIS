@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity  {
     ArrayList<String> iconFromApi;
     ArrayList<String> durumFromApi;
     ArrayList<String> sıcaklıkFromApi;
-    List<FavRecyclerAdapter.CityHolder> icindekiler;
+
 
     Request request;
 
-    private static Context context;
+    public static Context context;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity  {
 
     FavRecyclerAdapter favRecyclerAdapter;
 
-
+    AppDB appDb;
 
 
     @Override
@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity  {
         sıcaklıkFromApi = new ArrayList<>();
 
         context = this;
+
+        appDb = AppDB.getInstance(this);
+
 
     }
     public static final Context getContext (){

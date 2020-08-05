@@ -12,19 +12,13 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 
-import com.google.gson.Gson;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
-public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter.CityHolder>   {
+public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter.CityHolder> {
 
 
     private ArrayList<String> SehirList;
@@ -33,9 +27,8 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
     private ArrayList<String> SıcaklıkList;
 
 
-
-    public FavRecyclerAdapter(ArrayList<String> SehirList, final ArrayList<String> IconList, ArrayList<String> DurumList,
-    ArrayList<String> SıcaklıkList) {
+    public FavRecyclerAdapter(ArrayList<String> SehirList, ArrayList<String> IconList, ArrayList<String> DurumList,
+                              ArrayList<String> SıcaklıkList) {
 
         this.SehirList = SehirList;
         this.IconList = IconList;
@@ -50,7 +43,7 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
     public CityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.recycler_row, parent,false);
+        View view = layoutInflater.inflate(R.layout.recycler_row, parent, false);
         return new CityHolder(view);
     }
 
@@ -117,85 +110,41 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
             default:
                 Toast.makeText(MainActivity.getContext(), "Lütfen bir şehir giriniz!", Toast.LENGTH_LONG).show();
                 break;
-                }
+        }
 
         holder.durumadı.setText(DurumList.get(position));
         holder.sıcaklıkadı.setText(SıcaklıkList.get(position));
-        }
+    }
 
-        @Override
-        public int getItemCount () {
-            return SehirList.size();
-        }
+    @Override
+    public int getItemCount() {
+        return SehirList.size();
+    }
 
-        @Entity
-        class CityHolder extends RecyclerView.ViewHolder {
 
-            @PrimaryKey(autoGenerate = true)
-            private int id;
-            TextView sehiradı;
-            ImageView iconadı;
-            TextView durumadı;
-            TextView sıcaklıkadı;
+    class CityHolder extends RecyclerView.ViewHolder {
 
-            public CityHolder(@NonNull View itemView, TextView sehiradı, ImageView iconadı, TextView durumadı, TextView sıcaklıkadı) {
-                super(itemView);
-                this.sehiradı = sehiradı;
-                this.iconadı = iconadı;
-                this.durumadı = durumadı;
-                this.sıcaklıkadı = sıcaklıkadı;
-            }
 
-            public int getId() {
-                return id;
-            }
+        TextView sehiradı;
+        ImageView iconadı;
+        TextView durumadı;
+        TextView sıcaklıkadı;
 
-            public void setId(int id) {
-                this.id = id;
-            }
 
-            public TextView getSehiradı() {
-                return sehiradı;
-            }
 
-            public void setSehiradı(TextView sehiradı) {
-                this.sehiradı = sehiradı;
-            }
+        public CityHolder (View itemView) {
+            super(itemView);
 
-            public ImageView getIconadı() {
-                return iconadı;
-            }
+            sehiradı = itemView.findViewById(R.id.recycler_row_sehiradı);
+            iconadı = itemView.findViewById(R.id.recycler_row_imageview);
+            durumadı = itemView.findViewById(R.id.recycler_row_durumadı);
+            sıcaklıkadı = itemView.findViewById(R.id.recycler_row_sıcaklıkadı);
 
-            public void setIconadı(ImageView iconadı) {
-                this.iconadı = iconadı;
-            }
-
-            public TextView getDurumadı() {
-                return durumadı;
-            }
-
-            public void setDurumadı(TextView durumadı) {
-                this.durumadı = durumadı;
-            }
-
-            public TextView getSıcaklıkadı() {
-                return sıcaklıkadı;
-            }
-
-            public void setSıcaklıkadı(TextView sıcaklıkadı) {
-                this.sıcaklıkadı = sıcaklıkadı;
-            }
-
-            public CityHolder(@NonNull View itemView) {
-                super(itemView);
-
-                sehiradı = itemView.findViewById(R.id.recycler_row_sehiradı);
-                iconadı = itemView.findViewById(R.id.recycler_row_imageview);
-                durumadı = itemView.findViewById(R.id.recycler_row_durumadı);
-                sıcaklıkadı = itemView.findViewById(R.id.recycler_row_sıcaklıkadı);
-            }
         }
 
 
 
+
+    }
 }
+

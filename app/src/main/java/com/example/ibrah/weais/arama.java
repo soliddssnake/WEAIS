@@ -15,9 +15,9 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences.Editor;
-
+import androidx.room.Room;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.room.RoomDatabase;
 import android.app.Activity;
 import android.support.v4.app.*;
 import android.os.StrictMode;
@@ -47,7 +47,7 @@ import okhttp3.Response;
 import okhttp3.OkHttpClient;
 import okhttp3.Callback;
 import okhttp3.Request;
-
+import androidx.room.Database;
 import 	androidx.viewpager.widget.ViewPager;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.tabs.TabLayout;
@@ -92,12 +92,6 @@ public class arama extends Fragment   {
 
 
 
-
-
-
-
-
-    // TODO: Rename and change types and number of parameters
     public static arama newInstance(String param1, String param2) {
         arama fragment = new arama();
         Bundle args = new Bundle();
@@ -114,8 +108,6 @@ public class arama extends Fragment   {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
 
 
 
@@ -141,10 +133,9 @@ public class arama extends Fragment   {
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
 
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDB.class, "database-name").build();
 
 
+       // AppDB db = Room.inMemoryDatabaseBuilder(((MainActivity)getActivity()).context.getApplicationContext(), AppDB.class).build();
 
         aramatext.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
@@ -168,8 +159,6 @@ public class arama extends Fragment   {
             }
 
         });
-
-
 
 
 
@@ -225,9 +214,9 @@ public class arama extends Fragment   {
                                 ((MainActivity)getActivity()).sıcaklıkFromApi.add(temps);
                                 ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
-                                db.DataDAO().insertAll(new CityHolder(sehirFromApi.getText().toString));
 
-
+                                Weather hava = new Weather(Sehir);
+                                ((MainActivity)getActivity()).appDb.dataDAO().insertAll(hava);
 
                             }
                         });
