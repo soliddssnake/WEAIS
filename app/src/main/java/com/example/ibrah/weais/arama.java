@@ -219,7 +219,7 @@ public class arama extends Fragment   {
                                 ((MainActivity)getActivity()).appDb.dataDAO().insertAll(hava);
 
                             }
-                        });
+                        });//push
 
 
                     } catch (JSONException e) {
