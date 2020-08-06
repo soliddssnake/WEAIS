@@ -64,9 +64,9 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
         String durum = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_DURUM));
         String sıcaklık = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SICAKLIK));
 
-        holder.sehiradı.setText(SehirList.get(position));
+        holder.sehiradı.setText(sehir);
 
-        switch (IconList.get(position)) {
+        /*switch (IconList.get(position)) {
             case "01d":
                 holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.gunes));
                 break;
@@ -124,15 +124,15 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
             default:
                 Toast.makeText(MainActivity.getContext(), "Lütfen bir şehir giriniz!", Toast.LENGTH_LONG).show();
                 break;
-        }
+        }*/
 
-        holder.durumadı.setText(DurumList.get(position));
-        holder.sıcaklıkadı.setText(SıcaklıkList.get(position));
+        holder.durumadı.setText(durum);
+        holder.sıcaklıkadı.setText(sıcaklık);
     }
 
     @Override
     public int getItemCount() {
-        return SehirList.size();
+        return mCursor.getCount();
     }
 
     public void swapCursor(Cursor newCursor) {

@@ -41,7 +41,8 @@ import org.json.JSONObject;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 import okhttp3.OkHttpClient;
@@ -118,11 +119,21 @@ public class arama extends Fragment   {
         cv.put(SqlTable.SqlEntry.COLUMN_SICAKLIK, sıcaklık);
 
         mDatabase.insert(SqlTable.SqlEntry.TABLE_NAME, null, cv);
+        ((MainActivity)getActivity()).favRecyclerAdapter.swapCursor(getAllItems());
+
         view_sehir.setText("");
     }
 
     private Cursor getAllItems() {
-        return mDatabase.query("select * from TABLE_NAME");
+        return mDatabase.query(
+                SqlTable.SqlEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                SqlTable.SqlEntry.COLUMN_TIMESTAMP + " DESC"
+        );
     }
 
 
@@ -147,6 +158,11 @@ public class arama extends Fragment   {
 
         DBHelper dbHelper = new DBHelper(this.getContext());
         mDatabase = dbHelper.getWritableDatabase();
+
+        //RecyclerView recyclerView = viewGroup.findViewById(R.id.recyclerView);
+        //recyclerView.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
+        ((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter(this.getContext(), getAllItems());
+        //recyclerView.setAdapter(((MainActivity)getActivity()).favRecyclerAdapter);
 
 
 

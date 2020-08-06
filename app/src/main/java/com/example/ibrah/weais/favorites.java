@@ -58,8 +58,7 @@ public class favorites extends Fragment {
 
         RecyclerView recyclerView = viewGroup.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter( ((MainActivity)getActivity()).sehirFromApi, ((MainActivity)getActivity()).iconFromApi,
-                ((MainActivity)getActivity()).durumFromApi, ((MainActivity)getActivity()).sıcaklıkFromApi);
+        //((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter(this, arama.getAllItems());
         recyclerView.setAdapter(((MainActivity)getActivity()).favRecyclerAdapter);
 
 
