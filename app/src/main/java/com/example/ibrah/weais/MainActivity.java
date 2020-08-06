@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity  {
 
     FavRecyclerAdapter favRecyclerAdapter;
 
-    AppDB appDb;
+
 
 
     @Override
@@ -105,7 +105,8 @@ public class MainActivity extends AppCompatActivity  {
 
         context = this;
 
-        appDb = AppDB.getInstance(this);
+
+
 
 
     }

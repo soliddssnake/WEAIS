@@ -47,19 +47,10 @@ import okhttp3.Response;
 import okhttp3.OkHttpClient;
 import okhttp3.Callback;
 import okhttp3.Request;
-import androidx.room.Database;
-import 	androidx.viewpager.widget.ViewPager;
-import androidx.fragment.app.Fragment;
-import com.google.android.material.tabs.TabLayout;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.FragmentPagerAdapter;
-import android.app.ListFragment;
-import java.util.List;
+import 	android.content.ContentValues;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -90,6 +81,8 @@ public class arama extends Fragment   {
     FloatingActionButton aramabutonu;
     FloatingActionButton eklemebutonu;
 
+    private SQLiteDatabase mDatabase;
+
 
 
     public static arama newInstance(String param1, String param2) {
@@ -108,9 +101,28 @@ public class arama extends Fragment   {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
 
+    private void addItem() {
+        if(view_sehir.getText().toString().trim().length() == 0) {
+            return;
+        }
 
+        String sehir = view_sehir.getText().toString();
+        String durum = view_durum.getText().toString();
+        String sıcaklık = view_sıcaklık.getText().toString();
 
+        ContentValues cv = new ContentValues();
+        cv.put(SqlTable.SqlEntry.COLUMN_SEHIR, sehir);
+        cv.put(SqlTable.SqlEntry.COLUMN_DURUM, durum);
+        cv.put(SqlTable.SqlEntry.COLUMN_SICAKLIK, sıcaklık);
+
+        mDatabase.insert(SqlTable.SqlEntry.TABLE_NAME, null, cv);
+        view_sehir.setText("");
+    }
+
+    private Cursor getAllItems() {
+        return mDatabase.query("select * from TABLE_NAME");
     }
 
 
@@ -133,9 +145,10 @@ public class arama extends Fragment   {
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
 
+        DBHelper dbHelper = new DBHelper(this.getContext());
+        mDatabase = dbHelper.getWritableDatabase();
 
 
-       // AppDB db = Room.inMemoryDatabaseBuilder(((MainActivity)getActivity()).context.getApplicationContext(), AppDB.class).build();
 
         aramatext.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
@@ -214,12 +227,10 @@ public class arama extends Fragment   {
                                 ((MainActivity)getActivity()).sıcaklıkFromApi.add(temps);
                                 ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
-
-                                Weather hava = new Weather(Sehir);
-                                ((MainActivity)getActivity()).appDb.dataDAO().insertAll(hava);
+                                addItem();
 
                             }
-                        });//push
+                        });
 
 
                     } catch (JSONException e) {

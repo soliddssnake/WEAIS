@@ -2,6 +2,7 @@ package com.example.ibrah.weais;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter.CityHolder> {
 
 
-    private ArrayList<String> SehirList;
+    /*private ArrayList<String> SehirList;
     private ArrayList<String> IconList;
     private ArrayList<String> DurumList;
-    private ArrayList<String> SıcaklıkList;
+    private ArrayList<String> SıcaklıkList;*/
+    private Context mContext;
+    private Cursor mCursor;
 
-
-    public FavRecyclerAdapter(ArrayList<String> SehirList, ArrayList<String> IconList, ArrayList<String> DurumList,
+    public FavRecyclerAdapter(Context context, Cursor cursor) {
+        mContext = context;
+        mCursor = cursor;
+    }
+/*public FavRecyclerAdapter(ArrayList<String> SehirList, ArrayList<String> IconList, ArrayList<String> DurumList,
                               ArrayList<String> SıcaklıkList) {
 
         this.SehirList = SehirList;
@@ -36,7 +43,7 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
         this.SıcaklıkList = SıcaklıkList;
 
 
-    }
+    }*/
 
     @NonNull
     @Override
@@ -49,6 +56,13 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
 
     @Override
     public void onBindViewHolder(@NonNull CityHolder holder, int position) {
+        if (!mCursor.moveToPosition(position)){
+            return;
+        }
+
+        String sehir = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SEHIR));
+        String durum = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_DURUM));
+        String sıcaklık = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SICAKLIK));
 
         holder.sehiradı.setText(SehirList.get(position));
 
@@ -119,6 +133,17 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
     @Override
     public int getItemCount() {
         return SehirList.size();
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor != null){
+            mCursor.close();
+        }
+        mCursor = newCursor;
+
+        if (newCursor != null) {
+            notifyDataSetChanged();
+        }
     }
 
 
