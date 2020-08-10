@@ -50,10 +50,10 @@ import okhttp3.Callback;
 import okhttp3.Request;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+import java.util.List;
 import 	android.content.ContentValues;
 import androidx.annotation.NonNull;
-
+import java.util.ArrayList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -77,11 +77,16 @@ public class arama extends Fragment   {
     TextView view_durum;
     TextView view_detail;
 
+    TextView sehiradı;
+    ImageView iconadı;
+    TextView durumadı;
+    TextView sıcaklıkadı;
+
     ImageView view_hava;
     EditText aramatext;
     FloatingActionButton aramabutonu;
     FloatingActionButton eklemebutonu;
-
+    FloatingActionButton silmebutonu;
     private SQLiteDatabase mDatabase;
 
 
@@ -102,6 +107,7 @@ public class arama extends Fragment   {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     private void addItem() {
@@ -110,18 +116,15 @@ public class arama extends Fragment   {
         }
 
         String sehir = view_sehir.getText().toString();
-        String durum = view_durum.getText().toString();
-        String sıcaklık = view_sıcaklık.getText().toString();
+
 
         ContentValues cv = new ContentValues();
         cv.put(SqlTable.SqlEntry.COLUMN_SEHIR, sehir);
-        cv.put(SqlTable.SqlEntry.COLUMN_DURUM, durum);
-        cv.put(SqlTable.SqlEntry.COLUMN_SICAKLIK, sıcaklık);
+
+
 
         mDatabase.insert(SqlTable.SqlEntry.TABLE_NAME, null, cv);
         ((MainActivity)getActivity()).favRecyclerAdapter.swapCursor(getAllItems());
-
-        view_sehir.setText("");
     }
 
     private Cursor getAllItems() {
@@ -155,14 +158,18 @@ public class arama extends Fragment   {
         aramatext = viewGroup.findViewById(R.id.arama_text);
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
+        silmebutonu = viewGroup.findViewById(R.id.silme_butonu);
+
+        sehiradı = viewGroup.findViewById(R.id.recycler_row_sehiradı);
+        iconadı = viewGroup.findViewById(R.id.recycler_row_imageview);
+        durumadı = viewGroup.findViewById(R.id.recycler_row_durumadı);
+        sıcaklıkadı = viewGroup.findViewById(R.id.recycler_row_sıcaklıkadı);
 
         DBHelper dbHelper = new DBHelper(this.getContext());
         mDatabase = dbHelper.getWritableDatabase();
 
-        //RecyclerView recyclerView = viewGroup.findViewById(R.id.recyclerView);
-        //recyclerView.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
         ((MainActivity)getActivity()).favRecyclerAdapter = new FavRecyclerAdapter(this.getContext(), getAllItems());
-        //recyclerView.setAdapter(((MainActivity)getActivity()).favRecyclerAdapter);
+
 
 
 
@@ -189,7 +196,29 @@ public class arama extends Fragment   {
 
         });
 
+        //rowapi();
+        String[] projection = {
+                SqlTable.SqlEntry.COLUMN_SEHIR
+        };
+        Cursor cursor = mDatabase.query(SqlTable.SqlEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                SqlTable.SqlEntry.COLUMN_TIMESTAMP + " DESC");
+        List itemIds = new ArrayList<>();
 
+        while(cursor.moveToNext()) {
+            String sehirr = cursor.getString(cursor.getColumnIndexOrThrow(SqlTable.SqlEntry.COLUMN_SEHIR));
+            itemIds.add(sehirr);
+        }
+        cursor.close();
+        for(int i = 0 ; i< itemIds.size(); i++){
+            rowapi(itemIds.get(i).toString());
+        }
+
+        System.out.println("ASDFASDGFDASF");
 
         return viewGroup;
     }
@@ -237,13 +266,9 @@ public class arama extends Fragment   {
                         eklemebutonu.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View v) {
-                                ((MainActivity)getActivity()).sehirFromApi.add(Sehir);
-                                ((MainActivity)getActivity()).iconFromApi.add(icons);
-                                ((MainActivity)getActivity()).durumFromApi.add(description);
-                                ((MainActivity)getActivity()).sıcaklıkFromApi.add(temps);
-                                ((MainActivity)getActivity()).favRecyclerAdapter.notifyDataSetChanged();
 
                                 addItem();
+
 
                             }
                         });
@@ -270,11 +295,6 @@ public class arama extends Fragment   {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-                if (value.equals("")){
-                    Toast.makeText(getActivity(), "Lütfen bir şehir giriniz!",Toast.LENGTH_LONG).show();
-                }
-                else
                     text.setText(value);
             }
         });
@@ -329,4 +349,62 @@ public class arama extends Fragment   {
             }
         });
     }
+
+    public void rowapi(final String sehir){
+    OkHttpClient client = new OkHttpClient();
+        ((MainActivity)getActivity()).request = new Request.Builder()
+            .url("https://api.openweathermap.org/data/2.5/weather?q=" + sehir
+                + "&id=524901&APPID=d0280f511ea4590b2706e1b67f31e030&units=metric&lang=tr")
+            .get()
+            .build();
+
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    StrictMode.setThreadPolicy(policy);
+
+    try {
+            Response response= client.newCall(((MainActivity)getActivity()).request).execute();
+            client.newCall(((MainActivity)getActivity()).request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                }
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+
+                    String responseData= response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        JSONArray array=json.getJSONArray("weather");
+                        JSONObject object=array.getJSONObject(0);
+
+                        final String description = object.getString("description");
+                        final String icons = object.getString("icon");
+
+                        JSONObject temp1= json.getJSONObject("main");
+                        Double Temperature=temp1.getDouble("temp");
+
+                        final String temps = Math.round(Temperature)+" °C";
+
+                        System.out.println(temps + description);
+                        //sıcaklıkadı.setText(temps);
+                        //durumadı.setText(description);
+                        //setImage(view_hava ,icons);
+
+
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }catch (IOException e){
+
+            e.printStackTrace();
+        }
+
+}
+
+
+
 }

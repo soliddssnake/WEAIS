@@ -2,7 +2,7 @@ package com.example.ibrah.weais;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.database.sqlite.SQLiteDatabase;
 import android.content.res.Resources;
 import android.view.ViewGroup;
 import android.app.Activity;
@@ -51,16 +51,16 @@ import androidx.annotation.NonNull;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences;
-
+import 	android.content.ContentValues;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity  {
 
-    ArrayList<String> sehirFromApi;
+   /* ArrayList<String> sehirFromApi;
     ArrayList<String> iconFromApi;
     ArrayList<String> durumFromApi;
-    ArrayList<String> sıcaklıkFromApi;
+    ArrayList<String> sıcaklıkFromApi;*/
 
 
     Request request;
@@ -97,16 +97,7 @@ public class MainActivity extends AppCompatActivity  {
         viewPager.setAdapter(viewPagerAdapter);
 
 
-
-        sehirFromApi = new ArrayList<>();
-        iconFromApi = new ArrayList<>();
-        durumFromApi = new ArrayList<>();
-        sıcaklıkFromApi = new ArrayList<>();
-
         context = this;
-
-
-
 
 
     }

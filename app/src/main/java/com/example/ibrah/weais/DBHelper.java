@@ -20,9 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_WEATHERLIST_TABLE = "CREATE TABLE " +
                 SqlEntry.TABLE_NAME + " (" +
                 SqlEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                SqlEntry.COLUMN_SEHIR + " TEXT NOT NULL, " +
-                SqlEntry.COLUMN_DURUM + " TEXT NOT NULL, " +
-                SqlEntry.COLUMN_SICAKLIK + " TEXT NOT NULL, " +
+                SqlEntry.COLUMN_SEHIR + " TEXT NOT NULL,  " +
                 SqlEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 

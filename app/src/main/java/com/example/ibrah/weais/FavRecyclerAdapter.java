@@ -61,10 +61,11 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
         }
 
         String sehir = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SEHIR));
-        String durum = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_DURUM));
-        String sıcaklık = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SICAKLIK));
+        //long id = mCursor.getLong(mCursor.getColumnIndex(SqlTable.SqlEntry._ID));
 
         holder.sehiradı.setText(sehir);
+
+
 
         /*switch (IconList.get(position)) {
             case "01d":
@@ -126,8 +127,7 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
                 break;
         }*/
 
-        holder.durumadı.setText(durum);
-        holder.sıcaklıkadı.setText(sıcaklık);
+
     }
 
     @Override
