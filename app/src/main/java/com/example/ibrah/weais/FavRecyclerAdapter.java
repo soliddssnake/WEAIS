@@ -1,49 +1,43 @@
 package com.example.ibrah.weais;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.os.StrictMode;
+import okhttp3.Response;
+import okhttp3.OkHttpClient;
+import okhttp3.Callback;
+import okhttp3.Request;
 import java.io.IOException;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
+import 	android.content.ContentValues;
+import java.sql.PreparedStatement;
+import org.jetbrains.annotations.NotNull;
+import 	android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter.CityHolder> {
 
-
-    /*private ArrayList<String> SehirList;
-    private ArrayList<String> IconList;
-    private ArrayList<String> DurumList;
-    private ArrayList<String> SıcaklıkList;*/
     private Context mContext;
-    private Cursor mCursor;
+     Cursor mCursor;
 
     public FavRecyclerAdapter(Context context, Cursor cursor) {
         mContext = context;
         mCursor = cursor;
     }
-/*public FavRecyclerAdapter(ArrayList<String> SehirList, ArrayList<String> IconList, ArrayList<String> DurumList,
-                              ArrayList<String> SıcaklıkList) {
-
-        this.SehirList = SehirList;
-        this.IconList = IconList;
-        this.DurumList = DurumList;
-        this.SıcaklıkList = SıcaklıkList;
-
-
-    }*/
 
     @NonNull
     @Override
@@ -54,80 +48,27 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
         return new CityHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull CityHolder holder, int position) {
-        if (!mCursor.moveToPosition(position)){
+    public void onBindViewHolder(@NonNull final CityHolder holder, int position) {
+        if (!mCursor.moveToPosition(position)) {
             return;
         }
-
-        String sehir = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SEHIR));
-        //long id = mCursor.getLong(mCursor.getColumnIndex(SqlTable.SqlEntry._ID));
+        final String sehir = mCursor.getString(mCursor.getColumnIndex(SqlTable.SqlEntry.COLUMN_SEHIR));
 
         holder.sehiradı.setText(sehir);
+        holder.silmebutonu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                 String[] selectionArgs = {sehir};
+                arama.mDatabase.delete(SqlTable.SqlEntry.TABLE_NAME,
+                        SqlTable.SqlEntry.COLUMN_SEHIR + "=?", selectionArgs);
+                swapCursor(arama.getAllItems());
 
+            }
 
-        /*switch (IconList.get(position)) {
-            case "01d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.gunes));
-                break;
-            case "01n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.acikgece));
-                break;
-            case "02d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.parcalibulut));
-                break;
-            case "02n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.geceparcali));
-                break;
-            case "03d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.cokbulut));
-                break;
-            case "03n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulutgece));
-                break;
-            case "04d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulut));
-                break;
-            case "04n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.bulut));
-                break;
-            case "09d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmur));
-                break;
-            case "09n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmur));
-                break;
-            case "10d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.gunyagmur));
-                break;
-            case "10n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.yagmurgece));
-                break;
-            case "11d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.simsek));
-                break;
-            case "11n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.simsek));
-                break;
-            case "13d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.kar));
-                break;
-            case "13n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.kargece));
-                break;
-            case "50d":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.sis));
-                break;
-            case "50n":
-                holder.iconadı.setImageDrawable(MainActivity.getContext().getResources().getDrawable(R.drawable.sisgece));
-                break;
-            default:
-                Toast.makeText(MainActivity.getContext(), "Lütfen bir şehir giriniz!", Toast.LENGTH_LONG).show();
-                break;
-        }*/
-
-
+        });
     }
 
     @Override
@@ -146,16 +87,15 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
         }
     }
 
-
-    class CityHolder extends RecyclerView.ViewHolder {
-
-
-        TextView sehiradı;
-        ImageView iconadı;
-        TextView durumadı;
-        TextView sıcaklıkadı;
+    static class CityHolder extends RecyclerView.ViewHolder {
 
 
+        static TextView sehiradı;
+        static ImageView iconadı;
+        static TextView durumadı;
+        static TextView sıcaklıkadı;
+
+        FloatingActionButton silmebutonu;
 
         public CityHolder (View itemView) {
             super(itemView);
@@ -164,12 +104,12 @@ public class FavRecyclerAdapter extends RecyclerView.Adapter <FavRecyclerAdapter
             iconadı = itemView.findViewById(R.id.recycler_row_imageview);
             durumadı = itemView.findViewById(R.id.recycler_row_durumadı);
             sıcaklıkadı = itemView.findViewById(R.id.recycler_row_sıcaklıkadı);
-
+            silmebutonu = itemView.findViewById(R.id.silme_butonu);
         }
 
-
-
-
     }
+
 }
+
+
 

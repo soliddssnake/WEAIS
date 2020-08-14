@@ -10,7 +10,6 @@ public class SqlTable {
     public static final class SqlEntry implements BaseColumns{
         public static final String TABLE_NAME = "weatherList";
         public static final String COLUMN_SEHIR = "sehir";
-
         public static final String COLUMN_TIMESTAMP = "timestamp";
     }
 }

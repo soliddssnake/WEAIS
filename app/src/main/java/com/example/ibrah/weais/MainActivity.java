@@ -54,14 +54,8 @@ import android.content.SharedPreferences;
 import 	android.content.ContentValues;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.os.Handler;
 public class MainActivity extends AppCompatActivity  {
-
-   /* ArrayList<String> sehirFromApi;
-    ArrayList<String> iconFromApi;
-    ArrayList<String> durumFromApi;
-    ArrayList<String> sıcaklıkFromApi;*/
-
 
     Request request;
 
@@ -72,7 +66,7 @@ public class MainActivity extends AppCompatActivity  {
     private favorites favoritesFragment;
     private arama aramaFragment;
 
-    FavRecyclerAdapter favRecyclerAdapter;
+    static FavRecyclerAdapter favRecyclerAdapter;
 
 
 
@@ -81,7 +75,6 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tablayout);
@@ -96,13 +89,11 @@ public class MainActivity extends AppCompatActivity  {
         viewPagerAdapter.addFragment(favoritesFragment, "Favoriler");
         viewPager.setAdapter(viewPagerAdapter);
 
-
         context = this;
 
 
     }
     public static final Context getContext (){
-
 
         return context;
     }

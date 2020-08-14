@@ -75,20 +75,13 @@ public class arama extends Fragment   {
     TextView view_sehir;
     TextView view_sıcaklık;
     TextView view_durum;
-    TextView view_detail;
-
-    TextView sehiradı;
-    ImageView iconadı;
-    TextView durumadı;
-    TextView sıcaklıkadı;
-
     ImageView view_hava;
     EditText aramatext;
+
     FloatingActionButton aramabutonu;
     FloatingActionButton eklemebutonu;
-    FloatingActionButton silmebutonu;
-    private SQLiteDatabase mDatabase;
 
+    public static SQLiteDatabase mDatabase;
 
 
     public static arama newInstance(String param1, String param2) {
@@ -114,23 +107,22 @@ public class arama extends Fragment   {
         if(view_sehir.getText().toString().trim().length() == 0) {
             return;
         }
-
         String sehir = view_sehir.getText().toString();
-
 
         ContentValues cv = new ContentValues();
         cv.put(SqlTable.SqlEntry.COLUMN_SEHIR, sehir);
-
-
 
         mDatabase.insert(SqlTable.SqlEntry.TABLE_NAME, null, cv);
         ((MainActivity)getActivity()).favRecyclerAdapter.swapCursor(getAllItems());
     }
 
-    private Cursor getAllItems() {
+    public static Cursor getAllItems() {
+        String[] projection = {
+                SqlTable.SqlEntry.COLUMN_SEHIR
+        };
         return mDatabase.query(
                 SqlTable.SqlEntry.TABLE_NAME,
-                null,
+                projection,
                 null,
                 null,
                 null,
@@ -143,7 +135,7 @@ public class arama extends Fragment   {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_arama, container, false);
 
@@ -153,17 +145,11 @@ public class arama extends Fragment   {
         view_sıcaklık.setText("");
         view_durum = viewGroup.findViewById(R.id.durum);
         view_durum.setText("");
-        view_detail = viewGroup.findViewById(R.id.detail);
         view_hava = viewGroup.findViewById(R.id.ic_hava);
         aramatext = viewGroup.findViewById(R.id.arama_text);
         aramabutonu = viewGroup.findViewById(R.id.arama_butonu);
         eklemebutonu = viewGroup.findViewById(R.id.ekleme_butonu);
-        silmebutonu = viewGroup.findViewById(R.id.silme_butonu);
 
-        sehiradı = viewGroup.findViewById(R.id.recycler_row_sehiradı);
-        iconadı = viewGroup.findViewById(R.id.recycler_row_imageview);
-        durumadı = viewGroup.findViewById(R.id.recycler_row_durumadı);
-        sıcaklıkadı = viewGroup.findViewById(R.id.recycler_row_sıcaklıkadı);
 
         DBHelper dbHelper = new DBHelper(this.getContext());
         mDatabase = dbHelper.getWritableDatabase();
@@ -196,29 +182,8 @@ public class arama extends Fragment   {
 
         });
 
-        //rowapi();
-        String[] projection = {
-                SqlTable.SqlEntry.COLUMN_SEHIR
-        };
-        Cursor cursor = mDatabase.query(SqlTable.SqlEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                SqlTable.SqlEntry.COLUMN_TIMESTAMP + " DESC");
-        List itemIds = new ArrayList<>();
 
-        while(cursor.moveToNext()) {
-            String sehirr = cursor.getString(cursor.getColumnIndexOrThrow(SqlTable.SqlEntry.COLUMN_SEHIR));
-            itemIds.add(sehirr);
-        }
-        cursor.close();
-        for(int i = 0 ; i< itemIds.size(); i++){
-            rowapi(itemIds.get(i).toString());
-        }
 
-        System.out.println("ASDFASDGFDASF");
 
         return viewGroup;
     }
@@ -266,10 +231,7 @@ public class arama extends Fragment   {
                         eklemebutonu.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View v) {
-
                                 addItem();
-
-
                             }
                         });
 
@@ -349,62 +311,5 @@ public class arama extends Fragment   {
             }
         });
     }
-
-    public void rowapi(final String sehir){
-    OkHttpClient client = new OkHttpClient();
-        ((MainActivity)getActivity()).request = new Request.Builder()
-            .url("https://api.openweathermap.org/data/2.5/weather?q=" + sehir
-                + "&id=524901&APPID=d0280f511ea4590b2706e1b67f31e030&units=metric&lang=tr")
-            .get()
-            .build();
-
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-    StrictMode.setThreadPolicy(policy);
-
-    try {
-            Response response= client.newCall(((MainActivity)getActivity()).request).execute();
-            client.newCall(((MainActivity)getActivity()).request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                }
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
-
-                    String responseData= response.body().string();
-                    try {
-                        JSONObject json = new JSONObject(responseData);
-                        JSONArray array=json.getJSONArray("weather");
-                        JSONObject object=array.getJSONObject(0);
-
-                        final String description = object.getString("description");
-                        final String icons = object.getString("icon");
-
-                        JSONObject temp1= json.getJSONObject("main");
-                        Double Temperature=temp1.getDouble("temp");
-
-                        final String temps = Math.round(Temperature)+" °C";
-
-                        System.out.println(temps + description);
-                        //sıcaklıkadı.setText(temps);
-                        //durumadı.setText(description);
-                        //setImage(view_hava ,icons);
-
-
-                    } catch (JSONException e) {
-
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }catch (IOException e){
-
-            e.printStackTrace();
-        }
-
-}
-
-
 
 }
